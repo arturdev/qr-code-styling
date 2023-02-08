@@ -21,6 +21,7 @@ export default class QRCornerDot {
         break;
       case cornerDotTypes.rounded:
         drawFunction = this._drawRounded;
+        break;
       case cornerDotTypes.dot:
       default:
         drawFunction = this._drawDot;
@@ -54,13 +55,18 @@ export default class QRCornerDot {
 
   _basicRounded(args: BasicFigureDrawArgsCanvas): void {
     const { size, context } = args;
-
+    const dotSize = size / 7;
     this._rotateFigure({
       ...args,
       draw: () => {
-        context.arc(-size / 2, size / 2, size, -Math.PI / 2, 0);
-        context.lineTo(-size / 2, size / 2);
-        context.lineTo(-size / 2, -size / 2);
+        context.arc(-dotSize, -dotSize, 2.5 * dotSize, Math.PI, -Math.PI / 2);
+        context.lineTo(dotSize, -3.5 * dotSize);
+        context.arc(dotSize, -dotSize, 2.5 * dotSize, -Math.PI / 2, 0);
+        context.lineTo(3.5 * dotSize, -dotSize);
+        context.arc(dotSize, dotSize, 2.5 * dotSize, 0, Math.PI / 2);
+        context.lineTo(-dotSize, 3.5 * dotSize);
+        context.arc(-dotSize, dotSize, 2.5 * dotSize, Math.PI / 2, Math.PI);
+        context.lineTo(-3.5 * dotSize, -dotSize);
       }
     });
   }

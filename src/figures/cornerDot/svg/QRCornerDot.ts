@@ -21,6 +21,7 @@ export default class QRCornerDot {
         break;
       case cornerDotTypes.rounded:
         drawFunction = this._drawRounded;
+        break;
       case cornerDotTypes.dot:
       default:
         drawFunction = this._drawDot;
@@ -53,17 +54,33 @@ export default class QRCornerDot {
 
   _basicRounded(args: BasicFigureDrawArgs): void {
     const { size, x, y } = args;
+    const dotSize = size / 7;
 
     this._rotateFigure({
       ...args,
       draw: () => {
         this._element = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        // this._element.setAttribute("clip-rule", "evenodd");
         this._element.setAttribute(
           "d",
-          `M ${x} ${y}` + //go to top left position
-            `v ${size}` + //draw line to left bottom corner
-            `h ${size}` + //draw line to right bottom corner
-            `a ${size} ${size}, 0, 0, 0, ${-size} ${-size}` // draw rounded top right corner
+          `M ${x} ${y + 2.5 * dotSize}` +
+            `v ${2 * dotSize}` +
+            `a ${2.5 * dotSize} ${2.5 * dotSize}, 0, 0, 0, ${dotSize * 2.5} ${dotSize * 2.5}` +
+            `h ${2 * dotSize}` +
+            `a ${2.5 * dotSize} ${2.5 * dotSize}, 0, 0, 0, ${dotSize * 2.5} ${-dotSize * 2.5}` +
+            `v ${-2 * dotSize}` +
+            `a ${2.5 * dotSize} ${2.5 * dotSize}, 0, 0, 0, ${-dotSize * 2.5} ${-dotSize * 2.5}` +
+            `h ${-2 * dotSize}` +
+            `a ${2.5 * dotSize} ${2.5 * dotSize}, 0, 0, 0, ${-dotSize * 2.5} ${dotSize * 2.5}` +
+            `M ${x + 2.5 * dotSize} ${y + dotSize}` +
+            `h ${2 * dotSize}` +
+            `a ${1.5 * dotSize} ${1.5 * dotSize}, 0, 0, 1, ${dotSize * 1.5} ${dotSize * 1.5}` +
+            `v ${2 * dotSize}` +
+            `a ${1.5 * dotSize} ${1.5 * dotSize}, 0, 0, 1, ${-dotSize * 1.5} ${dotSize * 1.5}` +
+            `h ${-2 * dotSize}` +
+            `a ${1.5 * dotSize} ${1.5 * dotSize}, 0, 0, 1, ${-dotSize * 1.5} ${-dotSize * 1.5}` +
+            `v ${-2 * dotSize}` +
+            `a ${1.5 * dotSize} ${1.5 * dotSize}, 0, 0, 1, ${dotSize * 1.5} ${-dotSize * 1.5}`
         );
       }
     });
